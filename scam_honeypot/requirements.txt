@@ -4,6 +4,8 @@ requests
 pydantic
 google-generativeai
 openai
+torch
+transformers
 spacy
 redis
 python-dotenv
