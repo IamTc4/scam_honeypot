@@ -3,9 +3,7 @@ uvicorn
 requests
 pydantic
 google-generativeai
-openai  # For Grok (xAI) and OpenAI support
-transformers
-torch
+openai
 spacy
 redis
 python-dotenv
