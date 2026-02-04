@@ -1,13 +1,16 @@
 from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel
-from typing import List, Optional, Any
-from .detector import detect_scam
-from .agent_engine import AgentController
+from typing import List, Dict, Optional, Any
+from detector import detect_scam
+from agent_engine import AgentController
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="Scam Honeypot API")
 
 # Security
-API_KEY = "sk_test_987654321" # Demo key
+API_KEY = "sk_test_987654321"  # Demo key
 
 class MessageModel(BaseModel):
     sender: str
@@ -36,14 +39,26 @@ async def verify_api_key(x_api_key: str = Header(...)):
 @app.post("/api/scam-honeypot")
 async def handle_scam(request: ScamRequest, api_key: str = Depends(verify_api_key)):
     try:
-        # 1. Detect Scam (now returns dict)
-        detection_result = detect_scam(request.message.text)
+        # Convert conversation history to dict format
+        conversation_history = [
+            {"sender": msg.sender, "text": msg.text, "timestamp": msg.timestamp}
+            for msg in request.conversationHistory
+        ]
         
-        # 2. Process with Agent (pass full detection result)
+        # 1. Detect Scam with conversation context
+        detection_result = detect_scam(request.message.text, conversation_history)
+        
+        # 2. Process with Agent
+        message_dict = {
+            "sender": request.message.sender,
+            "text": request.message.text,
+            "timestamp": request.message.timestamp
+        }
+        
         reply_text = controller.process_message(
             request.sessionId,
-            request.message.text,
-            detection_result
+            message_dict,
+            conversation_history
         )
         
         # 3. Form Response
@@ -53,6 +68,7 @@ async def handle_scam(request: ScamRequest, api_key: str = Depends(verify_api_ke
         }
 
     except Exception as e:
+        logging.error(f"Error in handle_scam: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
