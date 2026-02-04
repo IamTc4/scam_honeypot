@@ -5,7 +5,9 @@
 ### Prerequisites
 - GitHub account
 - Render.com account (free tier available)
-- Google AI Studio API key (for Gemini - get from https://makersuite.google.com/app/apikey)
+- **LLM API Key** (choose one):
+  - **Grok (xAI)** - RECOMMENDED (free tier, get from https://console.x.ai/)
+  - Gemini (Google) - Alternative (free tier, get from https://makersuite.google.com/app/apikey)
 
 ### Steps
 
@@ -15,7 +17,7 @@
    git add .
    git commit -m "Initial commit - GUVI Hackathon submission"
    git branch -M main
-   git remote add origin YOUR_GITHUB_REPO_URL
+   git remote add origin https://github.com/IamTc4/scam_honeypot
    git push -u origin main
    ```
 
@@ -27,8 +29,11 @@
    - Click "Apply"
 
 3. **Set Environment Variables**
-   - In Render dashboard, go to each service
-   - Add `GEMINI_API_KEY` for honeypot service (get free key from Google AI Studio)
+   - In Render dashboard, go to scam honeypot service
+   - Click "Environment" tab
+   - Add **ONE** of these LLM API keys:
+     - **RECOMMENDED**: `GROK_API_KEY` = your Grok key from https://console.x.ai/
+     - **Alternative**: `GEMINI_API_KEY` = your Gemini key from https://makersuite.google.com/app/apikey
    - Other variables are already set in render.yaml
 
 4. **Get Your Public URLs**
@@ -67,7 +72,10 @@
    railway init
    railway up
    railway variables set HONEYPOT_API_KEY=sk_test_987654321
-   railway variables set GEMINI_API_KEY=your_gemini_key_here
+   # Choose ONE LLM provider:
+   railway variables set GROK_API_KEY=your_grok_key_here  # RECOMMENDED
+   # OR
+   railway variables set GEMINI_API_KEY=your_gemini_key_here  # Alternative
    railway variables set GUVI_CALLBACK_URL=https://hackathon.guvi.in/api/updateHoneyPotFinalResult
    ```
 
@@ -149,9 +157,12 @@ curl -X POST https://YOUR-HONEYPOT-API-URL/api/scam-honeypot \
 | Variable | Value | Required |
 |----------|-------|----------|
 | `HONEYPOT_API_KEY` | `sk_test_987654321` | Yes |
-| `GEMINI_API_KEY` | Your Google AI key | Yes |
+| `GROK_API_KEY` | Your Grok API key from console.x.ai | **Recommended** |
+| `GEMINI_API_KEY` | Your Gemini API key from makersuite.google.com | Alternative |
 | `GUVI_CALLBACK_URL` | `https://hackathon.guvi.in/api/updateHoneyPotFinalResult` | Yes |
 | `PYTHON_VERSION` | `3.10.0` | Recommended |
+
+**Note**: You only need ONE LLM API key (Grok OR Gemini). Grok is recommended for better performance.
 
 ---
 
@@ -165,9 +176,14 @@ curl -X POST https://YOUR-HONEYPOT-API-URL/api/scam-honeypot \
 - **Issue**: `en_core_web_sm` not found
 - **Solution**: Ensure build command includes `python -m spacy download en_core_web_sm`
 
-### Gemini API Errors
-- **Issue**: LLM responses fail
-- **Solution**: System falls back to template responses automatically
+### LLM API Errors
+- **Issue**: Grok/Gemini API responses fail
+- **Solution**: System automatically falls back to template responses (still works!)
+- **Fix**: Verify API key is correct and has quota remaining
+
+### Getting LLM API Keys
+- **Grok (Recommended)**: Visit https://console.x.ai/ → Sign up → Create API key
+- **Gemini (Alternative)**: Visit https://makersuite.google.com/app/apikey → Create API key
 
 ### Callback Fails
 - **Issue**: GUVI endpoint not reachable
@@ -178,7 +194,7 @@ curl -X POST https://YOUR-HONEYPOT-API-URL/api/scam-honeypot \
 ## Pre-Deployment Checklist
 
 - [ ] Code pushed to GitHub
-- [ ] Gemini API key obtained
+- [ ] LLM API key obtained (Grok recommended, or Gemini)
 - [ ] Render/Railway account created
 - [ ] Environment variables configured
 - [ ] Both services deployed successfully
