@@ -1,0 +1,40 @@
+services:
+  # Voice Detection Service
+  - type: web
+    name: voice-detection-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r voice_detection/requirements.txt
+      python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    startCommand: uvicorn voice_detection.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: VOICE_API_KEY
+        value: sk_test_123456789
+      - key: PYTHON_VERSION
+        value: 3.10.0
+    healthCheckPath: /
+    
+  # Scam Honeypot Service  
+  - type: web
+    name: scam-honeypot-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r scam_honeypot/requirements.txt
+      python -m spacy download en_core_web_sm
+    startCommand: uvicorn scam_honeypot.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: HONEYPOT_API_KEY
+        value: sk_test_987654321
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GUVI_CALLBACK_URL
+        value: https://hackathon.guvi.in/api/updateHoneyPotFinalResult
+      - key: PYTHON_VERSION
+        value: 3.10.0
+    healthCheckPath: /

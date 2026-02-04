@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-multipart
+numpy
+librosa
+soundfile
+pydub
+scipy
+torch
+torchaudio
+transformers
+xgboost
+scikit-learn
+joblib
+redis
+python-dotenv
+httpx

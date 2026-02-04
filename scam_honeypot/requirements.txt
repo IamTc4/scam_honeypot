@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+pydantic
+google-generativeai
+openai  # For Grok (xAI) and OpenAI support
+transformers
+torch
+spacy
+redis
+python-dotenv
+httpx
+textblob
+celery
