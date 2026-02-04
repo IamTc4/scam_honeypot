@@ -1,12 +1,20 @@
 import re
-from ml_detector import MLScamDetector
+from typing import List, Dict
+
+# Optional ML detector - only if torch is available
+try:
+    from ml_detector import MLScamDetector
+    ML_AVAILABLE = True
+except ImportError:
+    ML_AVAILABLE = False
+    MLScamDetector = None
 
 # Initialize ML detector (lazy loading)
 ml_detector = None
 
 def get_ml_detector():
     global ml_detector
-    if ml_detector is None:
+    if ML_AVAILABLE and ml_detector is None:
         ml_detector = MLScamDetector()
     return ml_detector
 
@@ -93,9 +101,13 @@ def detect_scam(message_text: str, conversation_history: List[Dict] = None) -> D
     }
 
 def _ml_classifier(text: str) -> float:
-    """Placeholder for ML classifier prediction."""
+    """ML classifier prediction - returns 0.0 if ML not available."""
+    if not ML_AVAILABLE:
+        return 0.0
     detector = get_ml_detector()
-    ml_score, _ = detector.predict(text) # Assuming predict returns score and type
+    if detector is None:
+        return 0.0
+    ml_score, _ = detector.predict(text)
     return ml_score
 
 def _determine_scam_type(text: str, scores: Dict) -> str:
