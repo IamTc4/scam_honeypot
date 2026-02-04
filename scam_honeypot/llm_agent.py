@@ -3,7 +3,7 @@ LLM-powered agent for natural conversations with scammers
 Supports multiple LLM providers: Grok (xAI), Gemini, OpenAI
 """
 import os
-from .config import config
+from config import config
 from typing import List, Dict, Optional
 import random
 

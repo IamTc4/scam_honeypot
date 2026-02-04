@@ -1,5 +1,5 @@
 import re
-from .ml_detector import MLScamDetector
+from ml_detector import MLScamDetector
 
 # Initialize ML detector (lazy loading)
 ml_detector = None

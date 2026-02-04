@@ -2,11 +2,11 @@ import random
 import requests
 from typing import Dict, List
 from datetime import datetime
-from .ner_intelligence import NERIntelligence
-from .llm_agent import LLMAgent
-from .persona_manager import PersonaManager
-from .conversation_analyzer import ConversationAnalyzer
-from .config import config
+from ner_intelligence import NERIntelligence
+from llm_agent import LLMAgent
+from persona_manager import PersonaManager
+from conversation_analyzer import ConversationAnalyzer
+from config import config
 
 CALLBACK_URL = config.GUVI_CALLBACK_URL
 
@@ -54,7 +54,7 @@ class AgentController:
         """
         Process incoming message and generate response with context-aware scam detection
         """
-        from .detector import detect_scam
+        from detector import detect_scam
         
         # Get or create session
         if session_id not in self.sessions:
