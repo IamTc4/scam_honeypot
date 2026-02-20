@@ -1,0 +1,41 @@
+# Environment files (contain API keys!)
+.env
+.env.local
+.env.*
+
+# Python Virtual Environments (NEVER COMMIT THESE)
+env/
+venv/
+myenv/
+scam_honeypot/env/
+scam_honeypot/myenv/
+scam_honeypot/venv/
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+Dist/
+build/
+*.spec
+
+# IDE
+.vscode/
+.idea/
+
+# Test/Debug files (not needed on server)
+test_*.py
+quick_*.py
+*.zip
+*.log
+tunnel_output.txt
+
+# Local only files
+GPU_TROUBLESHOOTING.md
+CHAMPIONSHIP_INVESTMENT_GUIDE.md
+COMPETITION_SPEECH.md
+HYBRID_LLM_SETUP.md
+QUICK_SETUP.md
+requirements_hybrid_llm.txt
+
+# Gemini brain directory
+.gemini/

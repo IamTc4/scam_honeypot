@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+requests
+pydantic
+google-generativeai
+openai
+torch
+transformers
+spacy
+redis
+python-dotenv
+httpx
+textblob
+celery
+groq
